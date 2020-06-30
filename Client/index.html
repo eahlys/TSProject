@@ -1,0 +1,112 @@
+<html lang="fr">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Scripts personnalisés-->
+        <script src="html.js"></script>
+        <script src="render.js"></script>
+
+        <!-- Jquerry -->
+        <script>window.$ = window.jQuery = require("jquery");</script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- Bootstrap CSS -->
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+        <!-- Css personnalisé -->
+        <link rel="stylesheet" href="css_perso.css" >
+
+        <!-- Titre application -->
+        <title>Messagerie</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row w-100">
+                <h1 class="w-100 text-center">Discussions</h1>
+            </div>
+            <div class="row h-75 w-100 mx-0">
+                <div class="col-4 h-100"> <!-- Colonne de gauche avec liste des contacts-->
+                    <h4>Liste des contacts</h4>
+                    <!--ICI BOUTON NOUVELLE DISCUTION-->
+                    <div class="p-1">
+                        <button class="btn btn-primary" data-toggle="collapse" data-target="#myForm" aria-controls="myForm">+</button>
+                        <button class="btn btn-info px-3 mx-1" data-toggle="collapse" data-target="#myOption" aria-controls="myOption">i</button>
+                    </div>
+                    <div class="collapse p-1" id="myForm"> <!--class="form-popup" id="myForm"-->
+                        <div class="card card-body">
+                                <h3>Nouvelle discussion</h3>
+                                <form action="#" onsubmit="ajouterContact(document.getElementById('psajouter').value);return false;">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <input class="h-100" type="text" placeholder="Client ID" name="contactID" id="psajouter" required>
+                                        </div>
+                                        <div class="col-4">
+                                            <button type="submit" class="btn btn-primary" onclick="ajouterContact(document.getElementById('psajouter').value)" data-toggle="collapse" data-target="#myForm" aria-controls="myForm">+</button> 
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                    <div class="collapse" id="myOption.old"> <!--class="form-popup" id="myForm"-->
+                        <div class="card card-body">
+                            <!--Faire afficher la variable nom ci-dessous-->
+                            <button class="btn btn-warning" onclick="displayContact(tabContactTest)">Afficher mon nom</button>
+                            <button type="submit" class="btn btn-success" data-toggle="collapse" data-target="#myOption" aria-controls="myOption">Appliquer</button>
+                        </div>
+                    </div>
+                    <!-- Afficher ici le nom du client -->
+                    <div class='w-100 break-word collapse p-1' id='myOption'><div id="setmyid"><h5>Mon ID :</h5></div></div>
+                    <div class='w-100 break-word collapse p-1' id='myOption'><div id="setmynode"><h5>Node :</h5></div></div>
+                    <!-- Liste des contacts -->
+                    <!--href="#" role="button" list-group-item list-group-item-action-->
+                    <div class="list-group h-100 w-100 p-1" id="list-contact">
+                        <!--<a class="list-group-item" id="contact">onclick="ouvrirForm()"
+                            <b>contact.name </b><br />
+                            last.message<br />
+                               Ajouter fonction pour dire nouveau message
+                                <span class="badge badge-primary badge-pill">!</span><br />
+                        </a>
+                        <button class="btn btn-danger" onclick="fermerForm()">Supprimer</button><br>
+                        <button class="btn btn-warning" >Modifier</button>-->
+                    </div>
+                </div>
+                <div class="col-8 h-100"> <!-- Colonne de droite avec affichage et envoie des messages et fichiers-->
+                    <div class="row w-100 heigt-perso"> <!-- Affichage des messages -->
+                        <div id="msg-box" class="card w-100 h-100 p-2">
+                        </div>
+                    </div>
+
+                    <div class="row w-100 pl-3 pt-2">
+                        <!-- Input des messages-->
+                        <form class="col-10 p-0" action="#" onSubmit="CM.getClient(currentId).send(document.getElementById('send-msg').value); document.getElementById('send-msg').value = '';return false">
+                            <div class="row m-0">
+                                <div class="col-10 p-0"><input class="w-100 h-100 form-control" id="send-msg" placeholder="Aa" class="msg-box"></input></div>
+                                <div class="col-2 p-0"><button class="btn btn-info" type="submit" onclick="CM.getClient(currentId).send(document.getElementById('send-msg').value); document.getElementById('send-msg').value = '';return false">Envoyer</button></div>
+                            </div>
+                        </form>
+                        <form class='col-2 p-0' action="#" onSubmit="return false">
+                            <input type="file" id="selectFile" style="display: none;" />
+                            <button class="btn btn-outline-info" onclick="document.getElementById('selectFile').click();" >Send file</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+    let e = document.getElementById('selectFile')
+    e.addEventListener('change', () => {
+        //console.log(document.getElementById('selectFile').files[0])
+        CM.getClient(currentId).uploadFile(document.getElementById('selectFile').files[0])
+    })
+    loadContact()
+    </script>
+</html>
+
+
+
